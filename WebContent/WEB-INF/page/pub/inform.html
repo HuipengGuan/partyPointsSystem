@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>通知公告</title>
+<link rel="stylesheet" href="${base}/res/plugins/layui/css/layui.css"
+	media="all">
+<link rel="stylesheet"
+	href="${base}/res/plugins/font-awesome/css/font-awesome.min.css"
+	media="all">
+<link rel="stylesheet" type="text/css" href="${base}/res/mine/miner.css">
+<style type="text/css">
+body {
+	padding: 15px;
+}
+.content{
+	padding: 20px 0
+}
+.content img{
+	max-width: 100%;
+}
+.date, .author{
+	color: #7d7d7d;
+	margin-left: 15px;
+}
+</style>
+</head>
+<body class="layui-layout-body" style="overflow: auto;">
+
+	<div class="layui-card">
+		<div class="layui-card-header">
+			${(info.TITLE)!}
+			<span class="author">发布人:管理员</span>
+			<span class="date">${(info.MODIFI_DATE)!}</span>
+		</div>
+		<div class="layui-card-body">
+	
+			<div class="content">${(info.CONTENT)!}</div>
+			
+		</div>
+	</div>
+	
+	<script src="${base}/res/plugins/layui/layui.js" charset="utf-8"></script>
+	<script src="${base}/res/plugins/jquery/jquery-2.2.3.min.js" charset="utf-8"></script>
+	<script>
+	layui.use([ 'laydate', 'laypage', 'layer', 'table', 'carousel',
+			'upload', 'element', 'slider' ], function() {
+		
+	})
+	</script>
+</body>
+</html>

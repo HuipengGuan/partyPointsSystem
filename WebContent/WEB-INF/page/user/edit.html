@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>修改</title>
+<link rel="stylesheet" href="${base}/res/plugins/layui/css/layui.css"
+	media="all">
+<link rel="stylesheet"
+	href="${base}/res/plugins/font-awesome/css/font-awesome.min.css"
+	media="all">
+<link rel="stylesheet" type="text/css" href="${base}/res/mine/miner.css">
+<style type="text/css">
+body {
+	padding: 15px;
+}
+
+* {
+	box-sizing: border-box;
+	color: #333
+}
+</style>
+</head>
+<body class="layui-layout-body" style="overflow: auto;">
+
+	<form id="userForm" class="layui-form" action="#" onsubmit="return false">
+
+		<!-- 用户ID,根据此信息可判断是否为新增用户 -->
+		<input type="hidden" name="user.ID" value="${(user.ID)!}">
+
+		<div class="layui-form-item">
+			<div class="layui-block">
+				<label class="layui-form-label">姓名</label>
+				<div class="layui-input-block">
+					<input type="text" value="${(user.NAME)!}" name="user.NAME" lay-verify="required|chineseWord"
+						autocomplete="off" class="layui-input">
+				</div>
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<div class="layui-block">
+				<label class="layui-form-label">用户名</label>
+				<div class="layui-input-block">
+					<input type="text" value="${(user.CODE)!}" name="user.CODE" lay-verify="required|username"
+						autocomplete="off" class="layui-input">
+				</div>
+			</div>
+		</div>
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">用户组</label>
+			<div class="layui-input-block">
+				<input type="checkbox" name="roleId" value="1" title="管理员">
+				<input type="checkbox" name="roleId" value="2" title="党员">
+			</div>
+		</div>
+
+		<div class="layui-form-item">
+			<div class="layui-input-block">
+				<button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+				<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+			</div>
+		</div>
+	</form>
+
+	<script src="${base}/res/plugins/layui/layui.js" charset="utf-8"></script>
+	<script src="${base}/res/plugins/jquery/jquery-2.2.3.min.js"
+		charset="utf-8"></script>
+	<script>
+	layui.use(['form', 'layedit', 'laydate'], function(){
+		  var form = layui.form
+		  ,layer = layui.layer
+		  ,layedit = layui.layedit
+		  ,laydate = layui.laydate;
+		  
+		  //日期
+		  laydate.render({
+		    elem: '#date'
+		  });
+		  laydate.render({
+		    elem: '#date1'
+		  });
+		  
+		  //自定义验证规则
+		  form.verify({
+		    chineseWord: function(value){
+		      if(value.length < 2){
+		        return '姓名至少得2个字符啊';
+		      }
+		    }
+		    ,username: [
+		      /^[\S]{5,12}$/
+		      ,'用户名必须5到12位，且不能出现空格'
+		    ]
+		    ,content: function(value){
+		      layedit.sync(editIndex);
+		    }
+		  });
+	})	  
+	
+	$("#userForm").submit(function(){
+		var params = $(this).serialize();
+		$.post("${base}/user/save", params, function(result){
+			if(result.code == 0){
+				var userId = $("input[name='user.ID']").val();
+				var msg = userId? "保存成功!" : "新增用户成功,初始密码为【123456】,请及时修改!"
+				layer.alert("保存成功!", function(){
+					parent.location.href = "${base}/user/index";
+				})
+			}else if(result.msg){
+				layer.alert(result.msg);
+			}else{
+				layer.alert("系统错误,请稍候重试!");
+			}
+		})
+	})
+       
+</script>
+</body>
+</html>

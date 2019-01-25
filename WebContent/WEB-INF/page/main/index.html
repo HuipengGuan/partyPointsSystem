@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>党员积分系统</title>
+  <link rel="stylesheet" href="${base}/res/plugins/layui/css/layui.css"  media="all">
+  <link rel="stylesheet" href="${base}/res/plugins/font-awesome/css/font-awesome.min.css"  media="all">
+  <link rel="stylesheet" type="text/css" href="${base}/res/mine/miner.css">
+
+  <style type="text/css">
+  	.layui-tabs{
+  		position: absolute;
+  		left: 200px;right: 0;
+  		top: 60px; height: 40px;
+  	}
+  	.layui-this{
+  		background-color: #009688;
+  		color: #fff !important
+  	}
+  	.layui-tab-title li{
+  		border-right: 1px solid #e6e6e6;
+  	}
+  	.box{
+  		border: 1px solid #ccc;
+  		padding: 20px;
+  		margin-bottom: 20px;
+  		position: relative;
+  	}
+  	
+  	.tab-item{
+  		display: block;margin: 0; 
+		padding: 0;border: none;
+		width: 100%;height: 100%;
+	}
+    .tabs-container{position: absolute;left: 200px; top: 60px; right: 0; height: 40px;}
+  </style>
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+  <div class="layui-header" style="min-width: 800px">
+    <div class="layui-logo">党员积分系统</div>
+    <!-- 头部区域（可配合layui已有的水平导航） -->
+    <ul class="layui-nav layui-layout-left">
+      <li class="layui-nav-item"><a href="">控制台</a></li>
+      <li class="layui-nav-item"><a href="">意见箱</a></li>
+      <li class="layui-nav-item"><a href="">消息</a></li>
+      <li class="layui-nav-item">
+        <a href="javascript:;">通知公告</a>
+        <dl class="layui-nav-child">
+          <dd><a href="">邮件管理</a></dd>
+          <dd><a href="">消息管理</a></dd>
+          <dd><a href="">授权管理</a></dd>
+        </dl>
+      </li>
+    </ul>
+    <ul class="layui-nav layui-layout-right">
+      <li class="layui-nav-item">
+        <a href="javascript:;">
+          <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
+          管理员
+        </a>
+        <dl class="layui-nav-child">
+          <dd><a href="">基本资料</a></dd>
+          <dd><a href="">安全设置</a></dd>
+        </dl>
+      </li>
+      <li class="layui-nav-item"><a href="">退出</a></li>
+    </ul>
+  </div>
+  
+  <div class="layui-side layui-bg-black">
+    <div class="layui-side-scroll">
+      <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+      <ul class="layui-nav layui-nav-tree"  lay-filter="test">
+      <#list menus as m>
+      	<#if m.PID == 0>
+      	<li class="layui-nav-item">
+          <a href="javascript:;">${m.NAME}</a>
+          <dl class="layui-nav-child">
+          	<#list menus as sm>
+          		<#if m.ID == sm.PID>
+          			<dd><a href="javascript:addTab(${sm.ID}, '${sm.NAME}', '${base}${sm.URL}');">${sm.NAME}</a></dd>
+          		</#if>
+          	</#list>
+          </dl>
+        </li>
+        </#if>
+	  </#list>
+      </ul>
+    </div>
+  </div>
+
+  <div class="tabs-container">
+	<div class="tab-content">
+		<div class="tab-left" title="选项卡左移"><i class="fa fa-angle-double-left"></i></div>
+		<div class="tab-list">
+			<div class="lis">
+				<li class="active" data-id="-1"><span>首页</span></li>
+			</div>
+		</div>
+		<div class="tab-right" title="选项卡右移"><i class="fa fa-angle-double-right"></i></div>
+	</div>
+  </div>
+  
+  <div class="layui-body tab-iframes" style="top: 100px; background-color: #f3f3f3">
+  	<iframe data-id="-1" class="tab-item" src="${base}/main/right"></iframe>
+  </div>
+    
+  
+  <div class="layui-footer">
+    <!-- 底部固定区域 -->
+    	技术支持: 宁波甬讯通信息科技有限公司
+  </div>
+</div>
+<script src="${base}/res/plugins/layui/layui.js" charset="utf-8"></script>
+<script src="${base}/res/plugins/jquery/jquery-2.2.3.min.js" charset="utf-8"></script>
+<script src="${base}/res/mine/miner.js"></script>
+<script>
+	//JavaScript代码区域
+	layui.use('element', function(){
+	  var element = layui.element;
+	});
+</script>
+</body>
+</html>

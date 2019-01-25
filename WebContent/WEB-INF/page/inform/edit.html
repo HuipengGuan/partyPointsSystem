@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>修改</title>
+<link rel="stylesheet" href="${base}/res/plugins/layui/css/layui.css"
+	media="all">
+<link rel="stylesheet"
+	href="${base}/res/plugins/font-awesome/css/font-awesome.min.css"
+	media="all">
+<link rel="stylesheet" type="text/css" href="${base}/res/mine/miner.css">
+<style type="text/css">
+body {
+	padding: 15px;
+}
+.layui-form-label{
+	width: 70px
+}
+.layui-form{
+	background-color: #fff;
+	padding: 15px;
+}
+
+</style>
+</head>
+<body class="layui-layout-body" style="overflow: auto;">
+
+	<form id="userForm" class="layui-form" action="#" onsubmit="return false">
+
+		<!-- 用户ID,根据此信息可判断是否为新增用户 -->
+		<input type="hidden" name="info.ID" value="${(info.ID)!}">
+
+		<div class="layui-form-item">
+			<div class="layui-block">
+				<label class="layui-form-label" >公告标题</label>
+				<div class="layui-input-block">
+					<input type="text" value="${(info.TITLE)!}" name="info.TITLE" lay-verify="required|chineseWord"
+						autocomplete="off" class="layui-input">
+				</div>
+			</div>
+		</div>
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">公告内容</label>
+			<div class="layui-input-block">
+				<textarea class="layui-textarea layui-hide" name="info.CONTENT"
+					lay-verify="content" id="editor">${(info.CONTENT)!}</textarea>
+			</div>
+		</div>
+
+		<div class="layui-form-item">
+			<div class="layui-input-block">
+				<button class="layui-btn" lay-submit="" lay-filter="demo1">保存公告</button>
+				<div class="layui-btn layui-btn-primary" onclick="viewInform()">预览</div>
+			</div>
+		</div>
+	</form>
+
+	<script src="${base}/res/plugins/layui/layui.js" charset="utf-8"></script>
+	<script src="${base}/res/plugins/jquery/jquery-2.2.3.min.js"
+		charset="utf-8"></script>
+	<script>
+	layui.use(['form', 'layedit', 'layedit', 'laydate'], function(){
+		
+			
+		var layedit = layui.layedit;
+		
+		layedit.set({uploadImage : {
+				url : '${base}/inform/img' //接口url
+				,type : 'post' //默认post
+			}
+		});
+		//创建一个编辑器
+		var editIndex = layedit.build('editor', {
+			height: '500'
+			,tool : [ 'strong' //加粗
+				, 'italic' //斜体
+				, 'underline' //下划线
+				, 'del' //删除线
+				, '|' //分割线
+				, 'left' //左对齐
+				, 'center' //居中对齐
+				, 'right' //右对齐
+				, 'link' //超链接
+				, 'unlink' //清除链接
+				, 'face' //表情
+				, 'image' //插入图片
+			]
+		});
+
+		var form = layui.form, layer = layui.layer, layedit = layui.layedit, laydate = layui.laydate;
+
+		//日期
+		laydate.render({
+			elem : '#date'
+		});
+		laydate.render({
+			elem : '#date1'
+		});
+
+		//自定义验证规则
+		form.verify({
+			chineseWord : function(value) {
+				if (value.length < 2) {
+					return '姓名至少得2个字符啊';
+				}
+			},
+			content : function(value) {
+				layedit.sync(editIndex);
+			}
+		});
+	})
+
+	$("#userForm").submit(function() {
+		var params = $(this).serialize();
+		$.post("${base}/inform/save", params, function(result) {
+			if (result.code == 0) {
+				layer.msg("保存成功!");
+			} else if (result.msg) {
+				layer.alert(result.msg);
+			} else {
+				layer.alert("系统错误,请稍候重试!");
+			}
+		})
+	})
+	
+	function viewInform(){
+		var id = $("input[name='info.ID']").val();
+		if(!id){
+			layer.msg("请先点击保存!");
+		}else{
+			parent.newTab(id + '123', "公告预览", "${base}/pub/inform?id=" + id);
+		}
+	}
+	</script>
+</body>
+</html>

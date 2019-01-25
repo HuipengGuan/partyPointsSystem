@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>修改</title>
+<link rel="stylesheet" href="${base}/res/plugins/layui/css/layui.css"
+	media="all">
+<link rel="stylesheet"
+	href="${base}/res/plugins/font-awesome/css/font-awesome.min.css"
+	media="all">
+<link rel="stylesheet" type="text/css" href="${base}/res/mine/miner.css">
+<style type="text/css">
+body {
+	padding: 15px;
+}
+
+* {
+	box-sizing: border-box;
+	color: #333
+}
+</style>
+</head>
+<body class="layui-layout-body" style="overflow: auto;">
+	<form id="userForm" class="layui-form" action="#"
+		onsubmit="return false">
+
+		<!-- 用户ID,根据此信息可判断是否为新增权限 -->
+		<input type="hidden" name="menu.ID" value="${(menu.ID)!}">
+
+		<div class="layui-form-item">
+			<div class="layui-block">
+				<label class="layui-form-label">父级</label>
+				<div class="layui-input-block">
+					<select name="menu.PID" lay-verify="required" lay-search="">
+						<option value="">直接选择或搜索选择</option>
+						<option value="0" selected="false">顶级菜单</option> <#list menus as
+						m>
+						<option value="${(m.ID)!}"<#if (menu.PID)??><#if m.ID ==
+							menu.PID>selected</#if></#if>><#if m.PID ==
+							0>&nbsp;&nbsp;&nbsp;<#else>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</#if>${(m.NAME)!}</option>
+						</#list>
+					</select>
+				</div>
+			</div>
+		</div>
+
+		<div class="layui-form-item">
+			<div class="layui-block">
+				<label class="layui-form-label">名称</label>
+				<div class="layui-input-block">
+					<input type="text" value="${(menu.NAME)!}" name="menu.NAME"
+						lay-verify="required|chineseWord" autocomplete="off"
+						class="layui-input">
+				</div>
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">类型</label>
+			<div class="layui-input-block">
+				<input type="radio" name="menu.TYPE" value="1" title="菜单"<#if
+				(menu.TYPE)??><#if menu.TYPE==1>checked</#if></#if>> <input
+					type="radio" name="menu.TYPE" value="0" title="按钮"<#if
+				(menu.TYPE)??><#if menu.TYPE==0>checked</#if></#if>>
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<div class="layui-block">
+				<label class="layui-form-label">编码</label>
+				<div class="layui-input-block">
+					<input type="text" value="${(menu.CODE)!}" style="width: 150px"
+						name="menu.CODE" lay-verify="required|code" autocomplete="off"
+						class="layui-input">
+				</div>
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<div class="layui-block">
+				<label class="layui-form-label">路径</label>
+				<div class="layui-input-block">
+					<input type="text" value="${(menu.URL)!}" name="menu.URL"
+						lay-verify="" autocomplete="off" class="layui-input">
+				</div>
+			</div>
+		</div>
+		<div class="layui-form-item layui-form-text">
+			<label class="layui-form-label">描述</label>
+			<div class="layui-input-block">
+				<textarea name="menu.DESCRIPTION" placeholder="请输入权限描述"
+					class="layui-textarea">${(menu.DESCRIPTION)!}</textarea>
+			</div>
+		</div>
+
+		<div class="layui-form-item">
+			<div class="layui-input-block">
+				<button class="layui-btn" lay-submit="" lay-filter="userForm">立即提交</button>
+				<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+			</div>
+		</div>
+	</form>
+
+	<script src="${base}/res/plugins/layui/layui.js" charset="utf-8"></script>
+	<script src="${base}/res/plugins/jquery/jquery-2.2.3.min.js"
+		charset="utf-8"></script>
+	<script>
+		layui.use([ 'form', 'layedit', 'laydate' ], function() {
+			var form = layui.form, layer = layui.layer, layedit = layui.layedit, laydate = layui.laydate;
+
+			//日期
+			laydate.render({
+				elem : '#date'
+			});
+			laydate.render({
+				elem : '#date1'
+			});
+
+			//自定义验证规则
+			form.verify({
+				chineseWord : function(value) {
+					if (value.length < 2) {
+						return '姓名至少得2个字符啊';
+					}
+				},
+				code : [ /^[\d]{6}$/, '编码为6位纯数字组成，且不能出现空格' ],
+				username : [ /^[\S]{5,12}$/,
+						'用户名必须5到12位，且不能出现空格' ],
+				content : function(value) {
+					layedit.sync(editIndex);
+				}
+			});
+		})
+
+		$("#userForm").submit(function() {
+			var params = $(this).serialize();
+			$.post("${base}/permission/save", params, function(result) {
+				if (result.code == 0) {
+					var menuId = $("input[name='menu.ID']").val();
+					var msg = menuId ? "修改成功!" : "新增权限成功!"
+					layer.alert("保存成功!", function() {
+						parent.location.href = "${base}/permission/index";
+					})
+				} else if (result.msg) {
+					layer.alert(result.msg);
+				} else {
+					layer.alert("系统错误,请稍候重试!");
+				}
+			})
+		})
+	</script>
+</body>
+</html>

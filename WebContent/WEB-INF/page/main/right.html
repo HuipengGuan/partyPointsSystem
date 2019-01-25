@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>首页</title>
+<link rel="stylesheet" href="${base}/res/plugins/layui/css/layui.css"  media="all">
+  <link rel="stylesheet" href="${base}/res/plugins/font-awesome/css/font-awesome.min.css"  media="all">
+<style type="text/css">
+	html, body{padding: 0; margin: 0; width: 100%; background-color: #f3f3f3}
+	*{box-sizing: border-box; color: #333}
+	.items ul{
+  		padding-left: 20px
+  	}
+  	.items ul li{
+  		list-style: none;
+  		float: left;
+  		width: 30%;
+  		min-width: 150px;
+  		padding: 5px;
+  		color: #757575;
+  		cursor: pointer;
+  	}
+  	.items ul li:HOVER{
+  		color: #009688;
+  	}
+  	.layui-this{
+  		background-color: #009688;
+  		color: #fff !important
+  	}
+  	.layui-tab-title li{
+  		border-right: 1px solid #e6e6e6;
+  	}
+  	.box{
+  		border: 1px solid #ccc;
+  		padding: 20px;
+  		margin-bottom: 20px;
+  		position: relative;
+  	}
+</style>
+</head>
+<body>
+	<!-- 内容主体区域
+	    <iframe class="tab-item" src="${base}/main/right"></iframe> -->
+    <div style="padding: 15px;">
+
+    	<div class="layui-card">
+              <div class="layui-card-header">积分项目列表</div>
+              <div class="layui-card-body">
+              	<blockquote class="layui-elem-quote">温馨提示：在下方项目列表中选择加(减)党员积分的项目，在跳转的表单中补全申请原因后，点击提交按钮。</blockquote>
+              	<!-- <div class="box" style="background-color: #fffed6">
+              		温馨提示：在下方项目列表中选择加(减)党员积分的项目，在跳转的表单中补全申请原因后，点击提交按钮。
+              	</div> -->
+              	<div class="box">
+	    			<table style="width: 100%;">
+	    				<tbody>
+	    					<tr>
+	    						<td align="center" width="100px">
+	    							<img src="${base}/res/img/plus2.png">
+	    							<br>
+	    							加分项目
+	    						</td>
+	    						<td>
+	    							<div class="items">
+					    				<ul>
+						    				<li>缴纳党费（+5分）</li>
+						    				<li>提出建议（+2分）</li>
+						    				<li>联系群众（+5分）</li>
+						    				<li>关爱帮扶（+3分）</li>
+						    				<li>群众活动（+7分）</li>
+						    				<li>助人为乐（+1~3分）</li>
+						    			</ul>
+					    			</div>
+	    						</td>
+	    					</tr>
+	    				</tbody>
+	    			</table>
+	    		</div>
+
+	    		<div class="box">
+		    		<table style="width: 100%;">
+	    				<tbody>
+	    					<tr>
+	    						<td align="center" width="100px">
+	    							<img src="${base}/res/img/sub2.png">
+				    				<br>
+				    				减分项目
+	    						</td>
+	    						<td>
+	    							<div class="items">
+						    			<ul>
+						    				<li>三会一课（-1/20分）</li>
+						    				<li>党日活动（-1~2/5分）</li>
+						    				<li>旅行职责（-2/7分）</li>
+						    				<li>项目服务（-1/6分）</li>
+						    				<li>违规违纪（-4/4分）</li>
+						    				<li>工作记录（-3/3分）</li>
+						    				<li>负面影响（-3/3分）</li>
+						    				<li>廉洁自律（-4/4分）</li>
+						    				<li>道德情操（-3/3分）</li>
+						    			</ul>
+						    		</div>
+	    						</td>
+	    					</tr>
+	    				</tbody>
+	    			</table>
+              </div>
+    	</div>
+  </div>
+  <!-- <div class="tab-item" data-id="0">
+	<div class="layui-card">
+		<div class="layui-card-header">积分项目列表</div>
+			<div class="layui-card-body">
+			</div>
+		</div>
+    </div>
+  </div>
+</body>
+</html>
